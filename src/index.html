@@ -1,10 +1,132 @@
 <body>
-  <h1>it works!</h1>
-  <style>
-    body { background: black; color: white; font-family: sans-serif; }
-  </style>
-  <script>
-    const title = document.querySelector("h1");
-    title.onclick = () => (title.textContent = "you clicked it");
-  </script>
+   <div class="piano">
+      <div data-midi="60" class="k w">
+         <div data-midi="61" class="k b"></div>
+      </div>
+
+      <div data-midi="62" class="k w">
+         <div data-midi="63" class="k b"></div>
+      </div>
+
+      <div data-midi="64" class="k w"></div>
+
+      <div data-midi="65" class="k w">
+         <div data-midi="66" class="k b"></div>
+      </div>
+
+      <div data-midi="67" class="k w">
+         <div data-midi="68" class="k b"></div>
+      </div>
+
+      <div data-midi="69" class="k w">
+         <div data-midi="70" class="k b"></div>
+      </div>
+
+      <div data-midi="71" class="k w"></div>
+
+      <div data-midi="72" class="k w">
+         <div data-midi="73" class="k b"></div>
+      </div>
+
+      <div data-midi="74" class="k w">
+         <div data-midi="75" class="k b"></div>
+      </div>
+
+      <div data-midi="76" class="k w"></div>
+
+      <div data-midi="77" class="k w">
+         <div data-midi="78" class="k b"></div>
+      </div>
+
+      <div data-midi="79" class="k w">
+         <div data-midi="80" class="k b"></div>
+      </div>
+
+      <div data-midi="81" class="k w">
+         <div data-midi="82" class="k b"></div>
+      </div>
+
+      <div data-midi="83" class="k w"></div>
+
+      <div data-midi="84" class="k w"></div>
+   </div>
+
+   <style>
+      body {
+         margin: 0;
+         background: #000;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 100vh;
+      }
+
+      .piano {
+         display: flex;
+      }
+
+      .k {
+         cursor: pointer;
+         transition: opacity 0.1s;
+      }
+
+      .w {
+         position: relative;
+         width: 40px;
+         height: 160px;
+         background: #fff;
+         margin-right: 2px;
+      }
+
+      .b {
+         position: absolute;
+         top: 0;
+         right: -13px;
+         width: 24px;
+         height: 100px;
+         background: #000;
+         z-index: 1;
+         cursor: pointer;
+      }
+
+      .w:active {
+         opacity: 0.6;
+      }
+
+      .b:active {
+         opacity: 0.4;
+      }
+   </style>
+
+   <script>
+      const keys = document.querySelectorAll(".k");
+
+      const f = (midi) => 440 * 2 ** ((midi - 69) / 12);
+
+      const aCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+      keys.forEach((key) => {
+         key.addEventListener("click", (e) => {
+            e.stopPropagation();
+
+            const midi = Number(key.dataset.midi);
+            const frequency = f(midi);
+
+            console.log(midi, frequency);
+
+            const oscillator = aCtx.createOscillator();
+
+            oscillator.type = "sine";
+            oscillator.frequency.setValueAtTime(
+               frequency,
+               aCtx.currentTime
+            );
+
+            oscillator.connect(aCtx.destination);
+
+            oscillator.start();
+            oscillator.stop(aCtx.currentTime + 0.5);
+         });
+      });
+   </script>
 </body>
