@@ -1,4 +1,9 @@
 <body>
+<select onchange="(((s) => wave = s.value)())">
+<option value="sine" selected>Sine</option>
+  <option value="triangle">Triangle</option>
+  <option value="sawtooth">Sawtooth</option>
+</select>
    <div class="piano">
       <div data-midi="60" class="k w">
          <div data-midi="61" class="k b"></div>
@@ -100,6 +105,7 @@
 
    <script>
       const keys = document.querySelectorAll(".k");
+      let wave = "sine";
 
       const f = (midi) => 440 * 2 ** ((midi - 69) / 12);
 
@@ -114,19 +120,23 @@
 
             console.log(midi, frequency);
 
-            const oscillator = aCtx.createOscillator();
+            
+const now = aCtx.currentTime;
+   const oscillator = aCtx.createOscillator();
+   const gain = aCtx.createGain();
 
-            oscillator.type = "sine";
-            oscillator.frequency.setValueAtTime(
-               frequency,
-               aCtx.currentTime
-            );
+   oscillator.type = wave;
+   oscillator.frequency.setValueAtTime(frequency, now);
 
-            oscillator.connect(aCtx.destination);
+   gain.gain.setValueAtTime(0, now);
+   gain.gain.linearRampToValueAtTime(0.3, now + 0.01);
+   gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
 
-            oscillator.start();
-            oscillator.stop(aCtx.currentTime + 0.5);
-         });
+   oscillator.connect(gain);
+   gain.connect(aCtx.destination);
+
+   oscillator.start(now);
+   oscillator.stop(now + 0.5);         });
       });
    </script>
 </body>
