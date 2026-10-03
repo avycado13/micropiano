@@ -1,0 +1,13 @@
+{
+  "name": "micropiano",
+  "module": "index.ts",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "terser": "^5.51.2"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  },
+  "private": true,
+  "type": "module"
+}
