@@ -1,5 +1,5 @@
 <body>
-<select onchange="(((s) => wave = s.value)())">
+<select>
 <option value="sine" selected>Sine</option>
   <option value="triangle">Triangle</option>
   <option value="sawtooth">Sawtooth</option>
@@ -105,8 +105,9 @@
 
    <script>
       const keys = document.querySelectorAll(".k");
-      let wave = "sine";
 
+      let wave = "sine";
+      
       const f = (midi) => 440 * 2 ** ((midi - 69) / 12);
 
       const aCtx = new (window.AudioContext || window.webkitAudioContext)();
