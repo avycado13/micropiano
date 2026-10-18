@@ -1,5 +1,5 @@
 <body>
-<select>
+<select aria-label="Waveform">
 <option value="sine" selected>Sine</option>
   <option value="triangle">Triangle</option>
   <option value="sawtooth">Sawtooth</option>
@@ -106,7 +106,7 @@
    <script>
       const keys = document.querySelectorAll(".k");
 
-      let wave = "sine";
+      const waveSelect = document.querySelector("select");
       
       const f = (midi) => 440 * 2 ** ((midi - 69) / 12);
 
@@ -126,7 +126,7 @@ const now = aCtx.currentTime;
    const oscillator = aCtx.createOscillator();
    const gain = aCtx.createGain();
 
-   oscillator.type = wave;
+   oscillator.type = waveSelect.value;
    oscillator.frequency.setValueAtTime(frequency, now);
 
    gain.gain.setValueAtTime(0, now);
